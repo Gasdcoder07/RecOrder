@@ -1,0 +1,23 @@
+import { Palette } from "std-widgets.slint";
+
+// Tokens de color. `mode`: 0 = Sistema, 1 = Claro, 2 = Oscuro.
+export global Theme {
+    in-out property <int> mode: 0;
+    // Avisa a Rust para alinear la barra de título de macOS con el tema. También cubre
+    // el modo Sistema, que cambia cuando macOS pasa de claro a oscuro.
+    callback appearance-changed();
+    changed mode => { appearance-changed(); }
+    out property <bool> dark: mode == 2 || (mode == 0 && Palette.color-scheme == ColorScheme.dark);
+    changed dark => { appearance-changed(); }
+
+    out property <color> background: dark ? #1c1c1e : #f5f5f7;
+    out property <color> surface: dark ? #2c2c2e : #ffffff;
+    out property <color> pressed: dark ? #3a3a3c : #e5e5ea;
+    out property <color> border: dark ? #48484a : #d1d1d6;
+    out property <color> text: dark ? #f2f2f7 : #1c1c1e;
+    out property <color> muted: dark ? #98989d : #6e6e73;
+    out property <color> accent: #0a84ff;
+    out property <color> on-accent: #ffffff;
+    out property <color> record: #ff3b30;
+    out property <color> error: dark ? #ff8a80 : #d70015;
+}

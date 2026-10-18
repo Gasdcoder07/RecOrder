@@ -1,0 +1,11 @@
+[package]
+name = "sr-audio"
+description = "Captura de micrófono y audio del sistema, mezcla y sincronía A/V"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+sr-core = { path = "../core" }

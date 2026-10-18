@@ -1,0 +1,15 @@
+[package]
+name = "sr-capture"
+description = "Fuentes de captura de pantalla por plataforma (SCK, WGC, PipeWire, X11)"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+sr-core = { path = "../core" }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+# macos_15_0: SCRecordingOutput graba a MP4 con el codificador de hardware del sistema.
+screencapturekit = { version = "10", features = ["macos_15_0"] }

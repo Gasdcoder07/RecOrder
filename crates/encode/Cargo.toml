@@ -1,0 +1,11 @@
+[package]
+name = "sr-encode"
+description = "Encoders de video por hardware (VideoToolbox, MF/NVENC, VAAPI) con fallback x264"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+sr-core = { path = "../core" }

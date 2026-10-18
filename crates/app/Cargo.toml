@@ -1,0 +1,27 @@
+[package]
+name = "screenrecorder"
+description = "Grabador de pantalla minimalista, ligero y de código abierto"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[[bin]]
+name = "screenrecorder"
+path = "src/main.rs"
+
+[dependencies]
+sr-core = { path = "../core" }
+sr-capture = { path = "../capture" }
+sr-encode = { path = "../encode" }
+sr-audio = { path = "../audio" }
+sr-platform = { path = "../platform" }
+ctrlc = "3.5.2"
+rfd = "0.17.2"
+chrono = { version = "0.4.45", default-features = false, features = ["clock"] }
+# Serie 1.9: las versiones posteriores exigen Rust 1.92 y el workspace declara 1.80.
+slint = { version = "~1.9.2", default-features = false, features = ["std", "backend-winit", "renderer-software", "compat-1-2", "raw-window-handle-06"] }
+
+[build-dependencies]
+slint-build = "~1.9.2"

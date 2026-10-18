@@ -1,0 +1,207 @@
+import { Theme } from "theme.slint";
+
+export { Theme }
+
+// Selector de opciones en forma de segmentos (estilo macOS).
+component Segmented inherits Rectangle {
+    in property <[string]> options;
+    in-out property <int> selected;
+
+    height: 26px;
+    border-radius: 7px;
+    background: Theme.pressed;
+
+    HorizontalLayout {
+        padding: 2px;
+        spacing: 2px;
+
+        for option[index] in root.options : Rectangle {
+            border-radius: 5px;
+            background: index == root.selected ? Theme.surface : transparent;
+
+            Text {
+                text: option;
+                font-size: 12px;
+                color: index == root.selected ? Theme.text : Theme.muted;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+
+            TouchArea {
+                clicked => { root.selected = index; }
+            }
+        }
+    }
+}
+
+export component MainWindow inherits Window {
+    title: "screenrecorder";
+    width: 360px;
+    height: 250px;
+    background: Theme.background;
+
+    in-out property <bool> recording;
+    in-out property <string> timer-text: "00:00:00";
+    in-out property <string> size-text: "0.0 MB";
+    in-out property <string> status-text;
+    in-out property <bool> status-error;
+    in-out property <bool> show-settings-button;
+    in-out property <string> folder-text;
+    // 0 = 30 fps, 1 = 60 fps.
+    in-out property <int> fps-index: 1;
+    // Graba la voz del micrófono como pista de audio. Solo se cambia con la grabación parada.
+    in-out property <bool> microphone: true;
+
+    callback toggle-recording();
+    callback change-folder();
+    callback open-settings();
+
+    VerticalLayout {
+        padding: 16px;
+        spacing: 12px;
+
+        // Botón principal: Record / Stop.
+        Rectangle {
+            height: 44px;
+            border-radius: 10px;
+            background: root.recording ? Theme.surface : Theme.record;
+            border-width: root.recording ? 1px : 0px;
+            border-color: Theme.border;
+
+            Text {
+                text: root.recording ? "■  Stop" : "●  Record";
+                font-size: 15px;
+                font-weight: 600;
+                color: root.recording ? Theme.text : Theme.on-accent;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+
+            TouchArea {
+                clicked => { root.toggle-recording(); }
+            }
+        }
+
+        // Temporizador, micrófono y tamaño del archivo en vivo.
+        HorizontalLayout {
+            spacing: 8px;
+
+            Text {
+                text: root.timer-text;
+                font-size: 26px;
+                font-weight: 500;
+                color: Theme.text;
+            }
+            Rectangle { }
+            Rectangle {
+                width: 68px;
+                height: 22px;
+                border-radius: 6px;
+                opacity: root.recording ? 0.5 : 1;
+                background: root.microphone ? Theme.accent : Theme.pressed;
+
+                Text {
+                    text: root.microphone ? "Mic on" : "Mic off";
+                    font-size: 11px;
+                    color: root.microphone ? Theme.on-accent : Theme.muted;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                }
+
+                TouchArea {
+                    clicked => {
+                        if (!root.recording) {
+                            root.microphone = !root.microphone;
+                        }
+                    }
+                }
+            }
+            Text {
+                text: root.size-text;
+                font-size: 13px;
+                color: Theme.muted;
+                vertical-alignment: bottom;
+            }
+        }
+
+        // Estado, o botón para abrir Ajustes del Sistema si falta el permiso.
+        HorizontalLayout {
+            spacing: 8px;
+
+            Text {
+                text: root.status-text;
+                font-size: 12px;
+                color: root.status-error ? Theme.error : Theme.muted;
+                overflow: elide;
+                vertical-alignment: center;
+            }
+
+            if root.show-settings-button : Rectangle {
+                width: 118px;
+                height: 22px;
+                border-radius: 6px;
+                background: Theme.accent;
+
+                Text {
+                    text: "Open Settings";
+                    font-size: 11px;
+                    color: Theme.on-accent;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                }
+
+                TouchArea {
+                    clicked => { root.open-settings(); }
+                }
+            }
+        }
+
+        // Opciones: FPS y tema.
+        HorizontalLayout {
+            spacing: 8px;
+
+            Segmented {
+                options: ["30 fps", "60 fps"];
+                selected <=> root.fps-index;
+                width: 120px;
+            }
+            Rectangle { }
+            Segmented {
+                options: ["System", "Light", "Dark"];
+                selected <=> Theme.mode;
+                width: 186px;
+            }
+        }
+
+        // Carpeta de salida.
+        HorizontalLayout {
+            spacing: 8px;
+
+            Text {
+                text: root.folder-text;
+                font-size: 12px;
+                color: Theme.muted;
+                overflow: elide;
+                vertical-alignment: center;
+            }
+            Rectangle {
+                width: 80px;
+                height: 22px;
+                border-radius: 6px;
+                background: Theme.pressed;
+
+                Text {
+                    text: "Change…";
+                    font-size: 11px;
+                    color: Theme.text;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                }
+
+                TouchArea {
+                    clicked => { root.change-folder(); }
+                }
+            }
+        }
+    }
+}

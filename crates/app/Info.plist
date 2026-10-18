@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>NSScreenCaptureUsageDescription</key>
+    <string>screenrecorder graba la pantalla para crear tus videos.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>screenrecorder graba tu voz desde el micrófono cuando lo activas.</string>
+</dict>
+</plist>

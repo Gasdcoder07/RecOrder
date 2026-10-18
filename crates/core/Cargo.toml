@@ -1,0 +1,10 @@
+[package]
+name = "sr-core"
+description = "Pipeline de captura, codificación y muxing de screenrecorder"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[dependencies]

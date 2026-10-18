@@ -1,0 +1,4 @@
+# ScreenCaptureKit enlaza con la runtime de Swift del sistema; sin este rpath
+# el binario no arranca (dyld: Library not loaded: @rpath/libswift_Concurrency.dylib).
+[target.'cfg(target_os = "macos")']
+rustflags = ["-C", "link-args=-Wl,-rpath,/usr/lib/swift"]
